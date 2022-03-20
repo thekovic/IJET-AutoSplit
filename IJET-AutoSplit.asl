@@ -5,8 +5,6 @@ state("indy")
 
 startup
 {
-    vars.currentLevelName = null;
-    vars.nextLevel = 1;
     vars.levelList = new string[] {
         "M01_SriLanka_01", "M01_SriLanka_02", "M01_SriLanka_03",
         "M01_SriLanka_04", "M01_SriLanka_05", "M01_SriLanka_06",
@@ -30,6 +28,11 @@ startup
         "M09_Tomb_01", "M09_Tomb_02", "M09_Tomb_03", "M09_Tomb_04",
         "M10_DeadCity_01", "M10_DeadCity_02", "M10_DeadCity_03", "M10_DeadCity_04"
 	};
+}
+
+init {
+	vars.currentLevelName = "empty";
+	vars.nextLevel = 1;
 }
 
 start
@@ -60,6 +63,7 @@ update
             vars.currentLevelName = temp[1];
         }
     }
+	print(vars.currentLevelName);
 }
 
 onReset
