@@ -5,6 +5,7 @@ state("indy")
 
 startup
 {
+	// Missing levels are cutscenes
     vars.levelList = new string[] {
         "M01_SriLanka_01", "M01_SriLanka_02", "M01_SriLanka_03",
         "M01_SriLanka_04", "M01_SriLanka_05", "M01_SriLanka_06",
@@ -20,7 +21,7 @@ startup
         "M04_HongKong_01", "M04_HongKong_02",
         "M04_HongKong_03", "M04_HongKong_04", "M04_HongKong_05",
         "M05_SUBBASE_01", "M05_SUBBASE_02", "M05_SUBBASE_03",
-        "M05_SUBBASE_04", "M05_SUBBASE_05", "M05_SUBBASE_06",
+		"M05_SUBBASE_05", "M05_SUBBASE_06",
         "M06_Gondola_01", "M06_Gondola_02", "M06_Gondola_03",
         "M06_Gondola_04", "M06_Gondola_05",
         "M07_Fortress_01", "M07_Fortress_02", "M07_Fortress_03", "M07_Fortress_04",
@@ -30,7 +31,8 @@ startup
 	};
 }
 
-init {
+init
+{
 	vars.currentLevelName = "empty";
 	vars.nextLevel = 1;
 }
@@ -45,15 +47,20 @@ start
 
 split
 {
+	// Needs to be lower case because the level name is in lower case in memory
+	// after you die for some reason
     if (vars.levelList[vars.nextLevel].ToLower() == vars.currentLevelName.ToLower()) {
         vars.nextLevel++;
         return true;
     }
+	// TODO: Add autosplit for final boss being defeated
     return false;
 }
 
 update
 {
+	// Parses level name from the hunk of data in memory
+	// Needed because the exact location of the level name string can change during gameplay
     string[] dataStrings = Encoding.UTF8.GetString(current.data).Split('\0');
     foreach (string x in dataStrings)
     {
@@ -63,6 +70,7 @@ update
             vars.currentLevelName = temp[1];
         }
     }
+	// TODO: Remove (debug only)
 	print(vars.currentLevelName);
 }
 
